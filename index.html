@@ -15,6 +15,52 @@ function renderContent(data){
   var html = markdown.toHTML(data)
   // render in content area
   document.getElementById('content').innerHTML = html
+
+  // generate searchable string for each
+  generateSearchableStrings()
+}
+
+// normalise (anglicise!) German characters
+// stolen from: http://stackoverflow.com/questions/863800/replacing-diacritics-in-javascript
+// unicode lookup: http://unicodelookup.com/
+function replaceSpecialCharacters(s) {
+  // the string
+  var s
+
+  // an array of characters to replace
+  var specialChars =[
+      /[\344]/g,  // a
+      /[\366]/g,  // o
+      /[\374]/g,  // u
+      /[\337]/g, // ß
+  ]
+
+  var chars = ['a', 'o', 'u', 's']
+
+  for (var i = 0; i < specialChars.length; i++) {
+    s = s.replace(specialChars[i],chars[i]);
+  }
+
+	return s;
+}
+
+function generateSearchableStrings(){
+  // an object of all content elements
+  var elements = document.querySelectorAll('p');
+  // cycle through object
+  Array.prototype.forEach.call(elements, function(el, i){
+
+    // get content
+    text = el.innerHTML
+
+    // remove capitals
+    text = text.toLowerCase()
+
+    // replace special characters
+    text = replaceSpecialCharacters(text)
+
+    el.dataset.searchable = text
+  })
 }
 
 // load the content
@@ -46,7 +92,10 @@ searchInput.focus()
 searchInput.onkeyup = function(){
   // check not empty...
   if (searchInput.value != '') {
-    doSearch(searchInput.value)
+    // normalise
+    var term = searchInput.value.toLowerCase()
+
+    doSearch(term)
   } else {
     clearSearch()
   }
@@ -80,24 +129,37 @@ function doSearch(term){
   var elements = document.querySelectorAll('p');
   // cycle through them
   Array.prototype.forEach.call(elements, function(el, i){
+    // get the searchable string
+    var searchableText = el.dataset.searchable
+
     // get the text as a string
     var text = el.innerHTML
 
     // search for string:
     // if no match...
-    if (text.indexOf(term) < 0) {
+    if (searchableText.indexOf(term) < 0) {
       // hide this element
       el.classList.add('is-hidden')
-      // remove inserted markup
+      // remove any inserted markup
       text.replace('<mark>', '')
       text.replace('</mark>', '')
     } else {
       // if match...
       // show this
       el.classList.remove('is-hidden')
-      // highlight term in result
-      text = text.replace(term, '<mark>'+term+'</mark>')
-      // replace original string with modified
+
+      // get index positions of start and end
+      var matchStart = searchableText.indexOf(term)
+      var matchEnd = matchStart + term.length
+
+      // slice up the string
+      var matchBefore = text.slice(0, matchStart)
+      var matchMiddle = text.slice(matchStart, matchEnd)
+      var matchAfter = text.slice(matchEnd)
+
+      // build new string with highlight
+      text = matchBefore+'<mark>'+matchMiddle+'</mark>'+matchAfter
+      // replace original string with marked
       el.innerHTML = text
     }
   });
