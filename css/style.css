@@ -1,0 +1,39 @@
+body {
+  max-width: 640px;
+  margin: 0 auto; }
+
+body, input {
+  font-family: serif;
+  font-style: italic;
+  font-size: 30px;
+  line-height: 40px; }
+
+.search {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  right: 0;
+  width: 100%;
+  max-width: 640px;
+  height: 80px;
+  padding: 40px;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid black;
+  background-color: white; }
+  .search:focus {
+    outline: none; }
+
+.content {
+  margin-top: 80px;
+  padding: 40px;
+  background-color: white; }
+
+p.is-hidden {
+  display: none; }
+
+mark {
+  background-color: MediumSpringGreen; }
+
+/*# sourceMappingURL=style.css.map */

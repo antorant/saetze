@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <script src="js/lib/markdown.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <input type="text" id="search" class="search" autocomplete="off" />
+    <div class="content" id="content"></div>
+
+    <script>
+// Render the loaded content
+function renderContent(data){
+  // convert markdown to html
+  var html = markdown.toHTML(data)
+  // render in content area
+  document.getElementById('content').innerHTML = html
+}
+
+// load the content
+function loadContent(hash) {
+  // create new request
+  var request = new XMLHttpRequest()
+  request.open('GET', 'content/content.txt')
+  // handle response
+  request.onreadystatechange = function() {
+    if (request.readyState == 4 && request.status == 200) {
+      renderContent(request.responseText)
+    }
+  }
+  // send the request
+  request.send()
+}
+
+// load content
+loadContent()
+
+
+
+
+// assign search element to variable
+var searchInput = document.getElementById('search')
+
+searchInput.focus()
+
+// handle search usage
+searchInput.onkeyup = function(){
+  // check not empty...
+  if (searchInput.value != '') {
+    doSearch(searchInput.value)
+  } else {
+    clearSearch()
+  }
+}
+
+function clearSearch(){
+
+  var elements = document.querySelectorAll('p');
+  Array.prototype.forEach.call(elements, function(el, i){
+    el.classList.remove('is-hidden')
+    text = el.innerHTML
+    text = text.replace('<mark>', '')
+    text = text.replace('</mark>', '')
+    el.innerHTML = text
+  })
+}
+
+function doSearch(term){
+  // console.log(term)
+  clearSearch()
+
+  var elements = document.querySelectorAll('p');
+  Array.prototype.forEach.call(elements, function(el, i){
+    var text = el.innerHTML
+
+    // if no match
+    if (text.indexOf(term) < 0) {
+      el.classList.add('is-hidden')
+      text.replace('<mark>', '')
+      text.replace('</mark>', '')
+    } else {
+      // match
+      el.classList.remove('is-hidden')
+      text = text.replace(term, '<mark>'+term+'</mark>')
+      el.innerHTML = text
+      console.log(el.innerHTML)
+    }
+  });
+}
+
+
+    </script>
+  </body>
+</html>

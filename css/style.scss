@@ -1,0 +1,58 @@
+$base: 40px;
+
+$highlight: hotpink;
+$highlight: deeppink;
+$highlight: orangered;
+$highlight: slateblue;
+$highlight: MediumSpringGreen;
+
+body {
+  max-width: $base * 16;
+  // padding: $base / 2;
+  margin: 0 auto;
+}
+
+body, input {
+  // font-family: 'Inconsolata', monospace;
+  font-family: serif;
+
+  font-style: italic;
+  font-size: 30px;
+  line-height: 40px;
+}
+
+.search {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  right: 0;
+  width: 100%;
+  max-width: $base * 16;
+  height: $base * 2;
+  padding: $base;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid black;
+
+  background-color: white;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.content {
+  margin-top: $base * 2;
+  padding: $base;
+  background-color: white;
+}
+
+p.is-hidden {
+  display: none;
+}
+
+mark {
+  background-color: $highlight;
+
+}
