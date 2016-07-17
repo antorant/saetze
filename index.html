@@ -21,8 +21,9 @@ function renderContent(data){
 function loadContent(hash) {
   // create new request
   var request = new XMLHttpRequest()
+  // point to content file
   request.open('GET', 'content/content.txt')
-  // handle response
+  // handle response...
   request.onreadystatechange = function() {
     if (request.readyState == 4 && request.status == 200) {
       renderContent(request.responseText)
@@ -32,18 +33,16 @@ function loadContent(hash) {
   request.send()
 }
 
+// Initialising...
 // load content
 loadContent()
 
-
-
-
 // assign search element to variable
 var searchInput = document.getElementById('search')
-
+// focus search input field
 searchInput.focus()
 
-// handle search usage
+// handle search input usage
 searchInput.onkeyup = function(){
   // check not empty...
   if (searchInput.value != '') {
@@ -54,41 +53,55 @@ searchInput.onkeyup = function(){
 }
 
 function clearSearch(){
-
+  // an object of all content elements
   var elements = document.querySelectorAll('p');
+  // cycle through object
   Array.prototype.forEach.call(elements, function(el, i){
+    // show all
     el.classList.remove('is-hidden')
+
+    // get content
     text = el.innerHTML
+
+    // remove any inserted markup
     text = text.replace('<mark>', '')
     text = text.replace('</mark>', '')
+
+    // replace content
     el.innerHTML = text
   })
 }
 
 function doSearch(term){
-  // console.log(term)
+  // clear previous search
   clearSearch()
 
+  // an object of all content elements
   var elements = document.querySelectorAll('p');
+  // cycle through them
   Array.prototype.forEach.call(elements, function(el, i){
+    // get the text as a string
     var text = el.innerHTML
 
-    // if no match
+    // search for string:
+    // if no match...
     if (text.indexOf(term) < 0) {
+      // hide this element
       el.classList.add('is-hidden')
+      // remove inserted markup
       text.replace('<mark>', '')
       text.replace('</mark>', '')
     } else {
-      // match
+      // if match...
+      // show this
       el.classList.remove('is-hidden')
+      // highlight term in result
       text = text.replace(term, '<mark>'+term+'</mark>')
+      // replace original string with modified
       el.innerHTML = text
-      console.log(el.innerHTML)
     }
   });
 }
-
-
     </script>
   </body>
 </html>
