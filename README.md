@@ -1,6 +1,6 @@
 # Sätze
 
-A personal reference tool to aid in learning and speaking German.
+A personal [reference tool](https://antorant.github.io/saetze/) to aid in learning and speaking German.
 
 Short, memorable sentences exemplify the use of certain words. These sentences are stored as Markdown in a text file, which is parsed and rendered as HTML on page load.
 
